@@ -14,6 +14,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
@@ -56,6 +59,15 @@ public class RegisterActivity extends AppCompatActivity {
                                             Toast.LENGTH_LONG).show();
                                 }else{
                                     Toast.makeText(RegisterActivity.this, "Registration is successful, login with your account now!", Toast.LENGTH_SHORT).show();
+
+                                    Users userInfo = new Users(email, pass);
+
+                                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                    DatabaseReference databaseRef = database.getReference("users");
+                                    FirebaseUser user = firebaseAuth.getCurrentUser();
+
+                                    databaseRef.child(user.getUid()).setValue(userInfo);
+
                                     startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                                     finish();
                                 }

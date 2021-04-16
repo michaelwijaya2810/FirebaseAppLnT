@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 public class DetailActivity extends AppCompatActivity {
 
     @Override
@@ -19,9 +21,7 @@ public class DetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        ivRoomImage.setImageResource(intent.getExtras().getInt("roomImage"));
+        Glide.with(this).load(intent.getExtras().getString("roomImage")).into(ivRoomImage);
         tvRoomImage.setText(intent.getExtras().getString("roomName"));
-
-
     }
 }

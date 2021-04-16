@@ -13,15 +13,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import com.bumptech.glide.Glide;
+
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryViewHolder>{
     Context context;
-    ArrayList<Integer> roomImageList;
-    ArrayList<String> roomNameList;
+    ArrayList<Room> roomList;
 
-    public GalleryAdapter(Context context, ArrayList<Integer> roomImageList, ArrayList<String> roomNameList){
+    public GalleryAdapter(Context context, ArrayList<Room> roomList){
         this.context = context;
-        this.roomImageList = roomImageList;
-        this.roomNameList = roomNameList;
+        this.roomList = roomList;
     }
 
     public static class GalleryViewHolder extends RecyclerView.ViewHolder{
@@ -44,15 +44,14 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
 
     @Override
     public void onBindViewHolder(@NonNull GalleryAdapter.GalleryViewHolder holder, int position) {
-        holder.ivRoomImage.setImageResource(roomImageList.get(position));
-        holder.tvRoomName.setText(roomNameList.get(position));
-
+        Glide.with(context).load(roomList.get(position).getImage()).into(holder.ivRoomImage);
+        holder.tvRoomName.setText(roomList.get(position).getName());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, DetailActivity.class);
-                intent.putExtra("roomImage", roomImageList.get(position));
-                intent.putExtra("roomName", roomNameList.get(position));
+                intent.putExtra("roomImage", roomList.get(position).getImage());
+                intent.putExtra("roomName", roomList.get(position).getName());
                 context.startActivity(intent);
             }
         });
@@ -60,6 +59,6 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
 
     @Override
     public int getItemCount() {
-        return roomNameList.size();
+        return roomList.size();
     }
 }
